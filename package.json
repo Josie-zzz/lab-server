@@ -1,0 +1,15 @@
+{
+  "name": "lab-server",
+  "version": "1.0.0",
+  "description": "网协管理平台后端",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "wangzengjie",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "request": "^2.88.2"
+  }
+}
