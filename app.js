@@ -1,23 +1,17 @@
 const express = require('express')
-const request = require('request')
 const app = express()
-const appId = 'wxe1f14c2fcbea5306'
-const appSecret = '00d6a2fa4ea3cf8d6121434b089e195e'
+const bodyParser = require('body-parser')
+
+const login = require('./routes/login')
+const discuss = require('./routes/discuss')
+
+//配置中间件，此中间件的作用是对post请求的请求体进行解析
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
 
 //登陆
-app.get('/login', (req, res) => {
-  let {code} = req.query
-  if(!code){
-    console.log('code不存在')
-    return
-  }
-  //请求微信小程序后端
-  request(`https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`, 
-  (err, r, body) => {
-    //获得session_key和openid
-    let obj = JSON.parse(body)
-    res.send(obj)
-  })
-})
+app.use('/login', login)
+//讨论
+app.use('/discuss', discuss)
 
 app.listen(3009)
