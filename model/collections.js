@@ -5,9 +5,6 @@ const UserSchema = mongoose.Schema({
   _id: String,
   studentNum: String,
   password: String,
-  name: String,
-  department: String,
-  subject: String,
   avaterUrl: String,
   level: {
     type: Number,
@@ -16,6 +13,18 @@ const UserSchema = mongoose.Schema({
 }, { _id: false })
 
 const UserModel = mongoose.model('Users', UserSchema, 'users')
+
+const SchoolSchema = mongoose.Schema({
+  _id: String,
+  studentNum: String,
+  name: String,
+  department: String,
+  subject: String,
+  sex: Number,
+  identity: Number,
+}, { _id: false })
+
+const SchoolModel = mongoose.model('School', SchoolSchema, 'school')
 
 const DiscussSchema = mongoose.Schema({
   _id: String,
@@ -34,5 +43,6 @@ const DiscussModel = mongoose.model('Discuss', DiscussSchema, 'discuss')
 
 module.exports = {
   UserModel,
+  SchoolModel,
   DiscussModel
 }
