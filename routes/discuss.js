@@ -4,7 +4,7 @@ const {DiscussModel} = require('../model/collections')
 
 //记录数据库总数
 let discussCount = -1
-DiscussModel.count((err, count) => {
+DiscussModel.countDocuments((err, count) => {
   if(err){
     console.log('获取讨论总数失败')
     return
