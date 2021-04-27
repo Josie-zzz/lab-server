@@ -118,7 +118,15 @@ router.get('/member', (req, res) => {
     }
     if(arr[0].level == 1){
       //拥有成员管理权限
-      UserModel.find({}, (err, arr2) => {
+      SchoolModel.find({}, async (err, arr2) => {
+        //查询用户表的级别
+        await arr2.forEach( async (v) => {
+          await UserModel.find({studentNum: v.studentNum}, (err, arr3) => {
+            if(arr3[0]){
+              Object.assign(v, {level: arr3[0].level})
+            }
+          })
+        })
         res.send({
           status: 1,
           errmsg: '当前用户有权限请求所有用户信息',
