@@ -48,20 +48,6 @@ router.post('/register', (req, res) => {
   })
 })
 
-//请求用户信息
-router.get('/info', (req,res, next) => {
-  const { studentNum } = req.query
-  console.log(studentNum)
-  SchoolModel.find({studentNum}, (err, arr) => {
-    console.log(err, arr[0])
-    if(arr[0]){
-      res.send({status: 1, errmsg: '查找信息成功', userInfo: arr[0]})
-    } else {
-      res.send({status: 0, errmsg: '没找到此用户数据'})
-    }
-    
-  })
-})
 
 //用户登录
 router.post('/doLogin', (req, res) => {
@@ -83,60 +69,6 @@ router.post('/doLogin', (req, res) => {
         } else {
           res.send({status: LOGIN_SUCCESS, errmsg: '登陆成功，即将跳转小程序', level: obj.level, studentNum: obj.studentNum, avaterUrl: obj.avaterUrl})
         }
-      })
-    }
-  })
-})
-
-router.post('/updateUser', (req, res) => {
-  const {studentNum, password, avaterUrl} = req.body
-  //需要更新的数据
-  let obj = {}
-  password && (obj.password = password)
-  avaterUrl && (obj.avaterUrl = avaterUrl)
-  UserModel.updateOne({studentNum}, obj, (err, docs) => {
-    if(docs.ok){
-      res.send({status: 1, errmsg: '修改成功'})
-    } else {
-      res.send({status: 0, errmsg: '此次没有修改'})
-    }
-  })
-})
-
-//成员管理，status 1（!0） 就是有权限请求到数据，0 就是没有权限请求到数据
-router.get('/member', (req, res) => {
-  const {studentNum} = req.query
-  // console.log(studentNum)
-  //查询数据库判断此用户是否有权限，level为1才可以成员管理
-  UserModel.find({studentNum}, (err, arr) => {
-    if(arr.length == 0){
-      res.send({
-        status: 2,
-        errmsg: '当前用户有权限请求所有用户信息,但此时数据库中还没有其他成员',
-        users: arr
-      })
-    }
-    if(arr[0].level == 1){
-      //拥有成员管理权限
-      SchoolModel.find({}, async (err, arr2) => {
-        //查询用户表的级别
-        await arr2.forEach( async (v) => {
-          await UserModel.find({studentNum: v.studentNum}, (err, arr3) => {
-            if(arr3[0]){
-              Object.assign(v, {level: arr3[0].level})
-            }
-          })
-        })
-        res.send({
-          status: 1,
-          errmsg: '当前用户有权限请求所有用户信息',
-          users: arr2
-        })
-      })
-    } else {
-      res.send({
-        status: 0,
-        errmsg: '当前用户没有权限请求所有用户信息',
       })
     }
   })

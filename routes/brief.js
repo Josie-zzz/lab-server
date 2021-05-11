@@ -2,7 +2,7 @@ const express = require('express')
 const { BriefModel } = require('../model/collections')
 const router = express.Router()
 
-router.get('/', (req, res) => {
+router.get('/all', (req, res) => {
 
   BriefModel.find({}, (err, arr) => {
     if(arr[0]){

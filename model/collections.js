@@ -1,6 +1,7 @@
 const mongoose = require('./db')
 
 //定义schema，也就是定义一个表（集合）,_id是默认给的，可以禁用的
+//所有用户表
 const UserSchema = mongoose.Schema({
   _id: Number,
   studentNum: String,
@@ -17,8 +18,9 @@ const UserSchema = mongoose.Schema({
 
 const UserModel = mongoose.model('Users', UserSchema, 'users')
 
+//所有学生老师信息表
 const SchoolSchema = mongoose.Schema({
-  _id: String,
+  _id: Number,
   studentNum: String,
   name: String,
   department: String,
@@ -29,22 +31,9 @@ const SchoolSchema = mongoose.Schema({
 
 const SchoolModel = mongoose.model('School', SchoolSchema, 'school')
 
-const DiscussSchema = mongoose.Schema({
-  _id: String,
-  type: Number,
-  openid: String,
-  content: String,
-  createTime: Number,
-  follow: {
-    type: Array,
-    default: []
-  }
-}, { _id: false })
-
-const DiscussModel = mongoose.model('Discuss', DiscussSchema, 'discuss')
-
+//协会简介表
 const BriefSchema = mongoose.Schema({
-  _id: String,
+  _id: Number,
   brief: String,
   history: Array,
   group: Array,
@@ -53,9 +42,20 @@ const BriefSchema = mongoose.Schema({
 
 const BriefModel = mongoose.model('Brief', BriefSchema, 'brief')
 
+//纳新表
+const freshSchema = mongoose.Schema({
+  _id: Number,		
+  studentNum: String,		
+  name: String,
+	status: String,	
+  goalGroup: String
+}, { _id: false })
+
+const freshModel = mongoose.model('Fresh', freshSchema, 'fresh')
+
 module.exports = {
   UserModel,
   SchoolModel,
-  DiscussModel,
-  BriefModel
+  BriefModel,
+  freshModel
 }
