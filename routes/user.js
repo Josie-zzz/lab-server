@@ -72,7 +72,8 @@ router.get('/member', (req, res) => {
             let obj = users.find(val => val.studentNum == v.studentNum)
             return {
               ...v._doc,
-              level: obj.level
+              level: obj.level,
+              groupInfo: obj.groupInfo
             }
           })
           // console.log(newArr)
@@ -99,7 +100,7 @@ router.post('/deleteMember', (req, res) => {
   UserModel.findOne({studentNum: operator}, (err, obj) => {
     if(obj){
       if(obj.level == 1){
-        UserModel.updateOne({studentNum}, {level: 3}, (err3, docs) => {
+        UserModel.updateOne({studentNum}, {level: 3,  groupInfo: null, jobInfo: null}, (err3, docs) => {
           if(docs.ok){
             res.send({status: SUCCESS_STATUS, errmsg: '删除成功'})
           } else {
@@ -118,14 +119,14 @@ router.post('/deleteMember', (req, res) => {
 
 //添加成员
 router.post('/addMember', (req, res) => {
-  const { operator, user } = req.body
+  const { operator, user, groupInfo = {}, jobInfo = {} } = req.body
   UserModel.findOne({studentNum: operator}, (err, obj) => {
     if(obj){
       if(obj.level == 1){
         UserModel.findOne({studentNum: user}, (err2, obj2) => {
           if(obj2){
             if(obj2.level == 3){
-              UserModel.updateOne({studentNum: user}, {level: 2}, (err3, docs) => {
+              UserModel.updateOne({studentNum: user}, {level: 2, groupInfo, jobInfo}, (err3, docs) => {
                 if(docs.ok){
                   res.send({
                     status: SUCCESS_STATUS,

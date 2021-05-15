@@ -14,6 +14,8 @@ const UserSchema = mongoose.Schema({
     type: Number,
     default: 3
   },
+  groupInfo: Object,      //组内信息，这两个只有在添加成员的时候才需要添加
+  jobInfo: Object         //就业信息
 }, { _id: false })
 
 const UserModel = mongoose.model('Users', UserSchema, 'users')
