@@ -3,7 +3,6 @@ const mongoose = require('./db')
 //定义schema，也就是定义一个表（集合）,_id是默认给的，可以禁用的
 //所有用户表
 const UserSchema = mongoose.Schema({
-  _id: Number,
   studentNum: String,
   password: String,
   avaterUrl: {
@@ -16,20 +15,19 @@ const UserSchema = mongoose.Schema({
   },
   groupInfo: Object,      //组内信息，这两个只有在添加成员的时候才需要添加
   jobInfo: Object         //就业信息
-}, { _id: false })
+})
 
 const UserModel = mongoose.model('Users', UserSchema, 'users')
 
 //所有学生老师信息表
 const SchoolSchema = mongoose.Schema({
-  _id: Number,
   studentNum: String,
   name: String,
   department: String,
   subject: String,
   sex: Number,
   identity: Number,
-}, { _id: false })
+})
 
 const SchoolModel = mongoose.model('School', SchoolSchema, 'school')
 
@@ -46,18 +44,31 @@ const BriefModel = mongoose.model('Brief', BriefSchema, 'brief')
 
 //纳新表
 const freshSchema = mongoose.Schema({
-  _id: Number,		
   studentNum: String,		
   name: String,
-	status: String,	
-  goalGroup: String
-}, { _id: false })
+	status: Number,	
+  goalGroup: Number
+})
 
 const freshModel = mongoose.model('Fresh', freshSchema, 'fresh')
+
+//竞赛和成果
+const compSchema = mongoose.Schema({
+  _id: String,
+  type: Number,
+  title: String,
+  txt: String,
+  creator: String,
+  studentNum: String,
+  createTime: String,
+}, {_id: false})
+
+const compModel = mongoose.model('Com', compSchema, 'competition')
 
 module.exports = {
   UserModel,
   SchoolModel,
   BriefModel,
-  freshModel
+  freshModel,
+  compModel
 }

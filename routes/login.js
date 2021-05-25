@@ -25,20 +25,16 @@ router.post('/register', (req, res) => {
       //查询此id是否在用户表中存在
       UserModel.find({studentNum}, (err, arr2) => {
         if(!arr2[0]){
-          UserModel.countDocuments((err2, count) => {
-            // 存入数据库
-            let id = ++count
-            let user = new UserModel({
-              _id: id,
-              ...req.body,
-            })
-            user.save((err) => {
-              if(err){
-                console.log('存入数据库失败')
-                return
-              }
-              res.send({id, status: REGISTER_SUCCESS, errmsg: '注册成功，即将跳转小程序', level: 3, studentNum, avaterUrl: ''})
-            })
+          // 存入数据库
+          let user = new UserModel({
+            ...req.body,
+          })
+          user.save((err) => {
+            if(err){
+              console.log('存入数据库失败')
+              return
+            }
+            res.send({status: REGISTER_SUCCESS, errmsg: '注册成功，即将跳转小程序', level: 3, studentNum, avaterUrl: ''})
           })
         } else {
           res.send({ status: TO_LOGIN, errmsg: '此用户已存在，请点击登陆'})
