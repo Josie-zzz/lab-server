@@ -35,17 +35,24 @@ router.post('/add', (req, res) => {
         errmsg: '不可以添加组内成员为报名学生',
       })
     } else {
-      // 存入数据库
-      let newStu = new freshModel({
-        ...stu,
-      })
-      newStu.save((err) => {
-        if(err){
-          console.log('存入数据库失败', err)
-          return
+      freshModel.findOne({studentNum}, (err3, obj3) => {
+        if(obj3){
+          res.send({status: FAIL_STATUS, errmsg: '该同学已经添加过'})
+        } else {
+          // 存入数据库
+          let newStu = new freshModel({
+            ...stu,
+          })
+          newStu.save((err) => {
+            if(err){
+              console.log('存入数据库失败', err)
+              return
+            }
+            res.send({status: SUCCESS_STATUS, errmsg: '添加报名学生成功'})
+          })
         }
-        res.send({status: SUCCESS_STATUS, errmsg: '添加报名学生成功'})
       })
+      
     }
   })
 })

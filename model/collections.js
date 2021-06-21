@@ -59,8 +59,10 @@ const compSchema = mongoose.Schema({
   title: String,
   txt: String,
   creator: String,
-  studentNum: String,
   createTime: String,
+  modifiter: String,
+  updTime: String,
+  studentNum: String,
 }, {_id: false})
 
 const compModel = mongoose.model('Com', compSchema, 'competition')

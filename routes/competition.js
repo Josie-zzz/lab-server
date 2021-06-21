@@ -40,7 +40,27 @@ router.post('/add', (req, res) => {
   })
 })
 
-router.post('/delete', (req, res) => {
+router.get('/del', (req, res) => {
+  const {_id} = req.query
+  compModel.remove({_id}, (err, doc) => {
+    console.log('doc', doc)
+    res.send({
+      status: SUCCESS_STATUS,
+      errmsg: '删除成功',
+    })
+  })
+})
+
+router.post('/update', (req, res) => {
+  const {_id, comp} = req.body
+
+  compModel.updateOne({_id}, comp, (err, docs) => {
+    if(docs.ok){
+      res.send({status: SUCCESS_STATUS, errmsg: '修改成功'})
+    } else {
+      res.send({status: FAIL_STATUS, errmsg: '此次没有修改'})
+    }
+  })
 })
 
 module.exports = router
